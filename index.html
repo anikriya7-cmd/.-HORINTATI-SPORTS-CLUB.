@@ -3,444 +3,562 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>HORINTATI SPORTS CLUB</title>
 
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
 <style>
-*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
+
+*{
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
 
 body{
-    background:#eef3f7;
-    color:#222;
+    margin:0;
+    min-height:100vh;
+    font-family:Arial, sans-serif;
+    color:#fff;
+
+    background:
+    linear-gradient(
+        rgba(0,20,50,.55),
+        rgba(0,10,30,.72)
+    ),
+    url("https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=2000&q=90");
+
+    background-size:cover;
+    background-position:center;
+    background-attachment:fixed;
 }
 
-header{
-    background:linear-gradient(135deg,#071d36,#0b5cab);
-    color:white;
-    padding:18px 15px;
-    text-align:center;
-    position:sticky;
-    top:0;
-    z-index:1000;
-    box-shadow:0 3px 10px rgba(0,0,0,.25);
-}
+/* DARK OVERLAY */
 
-header h1{font-size:23px;letter-spacing:1px}
-header p{margin-top:5px;font-size:12px;opacity:.9}
-
-.menu-btn{
-    position:absolute;
-    left:15px;
-    top:18px;
-    width:38px;
-    height:34px;
-    background:white;
-    border:0;
-    border-radius:7px;
-    cursor:pointer;
-}
-
-.menu-btn span{
-    display:block;
-    width:22px;
-    height:3px;
-    background:#0b5cab;
-    margin:4px auto;
-    border-radius:5px;
-}
-
-.side-menu{
-    position:fixed;
-    left:-290px;
-    top:0;
-    width:280px;
-    height:100vh;
-    background:white;
-    z-index:3000;
-    box-shadow:5px 0 20px rgba(0,0,0,.3);
-    transition:.3s;
-    overflow-y:auto;
-}
-
-.side-menu.active{left:0}
-
-.menu-title{
-    background:#071d36;
-    color:white;
-    padding:25px 18px;
-    font-size:20px;
-    font-weight:bold;
-}
-
-.menu-item{
-    padding:18px;
-    border-bottom:1px solid #eee;
-    cursor:pointer;
-    font-weight:bold;
-}
-
-.menu-item:hover{
-    background:#eaf3ff;
-    color:#075bb5;
-}
-
-.close-menu{
-    float:right;
-    cursor:pointer;
-    font-size:22px;
-}
-
-.overlay{
+body:before{
+    content:"";
     position:fixed;
     inset:0;
-    background:rgba(0,0,0,.45);
-    display:none;
-    z-index:2000;
+    background:rgba(0,0,0,.15);
+    pointer-events:none;
+    z-index:-1;
 }
 
-.overlay.active{display:block}
+/* MAIN */
 
-main{
-    max-width:1000px;
+.container{
+    width:94%;
+    max-width:1250px;
     margin:auto;
-    padding:20px 15px 50px;
 }
 
-.page{display:none}
-.page.active{display:block}
+/* HEADER */
 
-.home-box,
-.form-box{
-    background:white;
-    padding:22px;
-    border-radius:15px;
-    box-shadow:0 3px 15px rgba(0,0,0,.08);
-    margin-top:15px;
+header{
+    text-align:center;
+    padding:28px 10px 20px;
 }
 
-.home-box{text-align:center;padding:35px 20px}
-.home-box h2{color:#075bb5;margin-bottom:10px}
-.home-box p{line-height:1.7}
-
-.form-box h2{
-    margin-bottom:18px;
-    color:#075bb5;
+.logo{
+    width:85px;
+    height:85px;
+    margin:auto;
+    border-radius:50%;
+    background:linear-gradient(135deg,#071b4b,#ffd000);
+    border:3px solid #fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:42px;
+    box-shadow:0 8px 25px rgba(0,0,0,.4);
 }
 
-input,select,textarea{
-    width:100%;
-    padding:13px;
-    margin:7px 0 13px;
-    border:1px solid #ccd5df;
-    border-radius:8px;
-    outline:none;
-    font-size:15px;
+header h1{
+    margin:10px 0 4px;
+    font-size:clamp(28px,5vw,55px);
+    font-weight:900;
+    letter-spacing:1px;
+    text-shadow:0 4px 15px #000;
 }
 
-textarea{
-    min-height:100px;
-    resize:vertical;
+header h1 span{
+    color:#ffd000;
 }
 
-button.main-btn{
-    width:100%;
-    padding:13px;
-    border:0;
-    border-radius:8px;
-    background:#075bb5;
-    color:white;
+header p{
+    margin:0;
+    font-size:16px;
     font-weight:bold;
-    font-size:15px;
-    cursor:pointer;
+    letter-spacing:4px;
 }
 
-button.main-btn:hover{background:#064989}
+/* ICON MENU */
+
+nav{
+    display:grid;
+    grid-template-columns:repeat(6,1fr);
+    gap:10px;
+
+    padding:10px;
+    margin-bottom:18px;
+
+    background:rgba(0,15,40,.72);
+    border:1px solid rgba(255,255,255,.35);
+    border-radius:18px;
+    backdrop-filter:blur(10px);
+    box-shadow:0 10px 35px rgba(0,0,0,.4);
+}
+
+.nav-btn{
+    border:none;
+    color:#fff;
+    min-height:78px;
+    border-radius:14px;
+    cursor:pointer;
+    font-size:14px;
+    font-weight:bold;
+    transition:.25s;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:6px;
+}
+
+.nav-btn .icon{
+    font-size:29px;
+}
+
+.nav-btn:hover{
+    transform:translateY(-4px) scale(1.02);
+    filter:brightness(1.15);
+}
+
+.notice-btn{
+    background:linear-gradient(135deg,#087cf5,#0646a8);
+}
+
+.member-btn{
+    background:linear-gradient(135deg,#00a86b,#006b43);
+}
+
+.admin-btn{
+    background:linear-gradient(135deg,#ff4050,#c90018);
+}
+
+.players-btn{
+    background:linear-gradient(135deg,#7046e8,#40169c);
+}
+
+.contact-btn{
+    background:linear-gradient(135deg,#ff9d16,#e65c00);
+}
+
+.blood-btn{
+    background:linear-gradient(135deg,#11aebe,#006d78);
+}
+
+/* SECTION */
+
+.section{
+    display:none;
+
+    background:rgba(255,255,255,.93);
+    color:#172033;
+
+    padding:22px;
+    margin-bottom:25px;
+
+    border-radius:20px;
+
+    box-shadow:
+        0 15px 50px rgba(0,0,0,.45),
+        inset 0 1px 0 rgba(255,255,255,.8);
+
+    backdrop-filter:blur(12px);
+
+    animation:showSection .3s ease;
+}
+
+.section.active{
+    display:block;
+}
+
+@keyframes showSection{
+    from{
+        opacity:0;
+        transform:translateY(12px);
+    }
+
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+/* SECTION TITLE */
+
+.section h2{
+    margin:0 0 18px;
+    padding:14px 18px;
+
+    color:#fff;
+
+    border-radius:12px;
+
+    background:linear-gradient(90deg,#086ee8,#092d70);
+
+    box-shadow:0 5px 15px rgba(0,0,0,.2);
+}
+
+/* NOTICE */
+
+#notice{
+    min-height:210px;
+}
+
+.notice-title{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
+
+.notice-title span{
+    font-size:30px;
+}
+
+#notice-list{
+    font-size:17px;
+    line-height:1.9;
+}
+
+.notice-item{
+    padding:12px 15px;
+    margin:8px 0;
+
+    background:linear-gradient(
+        90deg,
+        rgba(10,111,230,.12),
+        rgba(255,255,255,.8)
+    );
+
+    border-left:5px solid #087cf5;
+    border-radius:8px;
+}
+
+/* CARD */
 
 .card{
-    background:white;
-    border-radius:14px;
-    padding:18px;
+    border:1px solid #dbe2ef;
+    padding:15px;
     margin:12px 0;
-    box-shadow:0 3px 12px rgba(0,0,0,.08);
+    border-radius:14px;
+
+    display:flex;
+    gap:15px;
+    align-items:center;
+
+    background:#fff;
+
+    box-shadow:0 5px 18px rgba(0,0,0,.08);
+
+    transition:.2s;
+}
+
+.card:hover{
+    transform:translateY(-2px);
+    box-shadow:0 8px 22px rgba(0,0,0,.13);
+}
+
+.card img{
+    width:80px;
+    height:80px;
+    border-radius:50%;
+    object-fit:cover;
+    border:3px solid #087cf5;
 }
 
 .card h3{
-    color:#075bb5;
-    margin-bottom:8px;
+    margin:0 0 7px;
+    color:#092d70;
 }
 
-.card p{line-height:1.6}
-
-.player-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
-    gap:15px;
+.card p{
+    margin:3px 0;
 }
 
-.player-card{
-    background:white;
-    padding:15px;
-    border-radius:14px;
-    text-align:center;
-    box-shadow:0 3px 12px rgba(0,0,0,.08);
-}
+/* INPUT */
 
-.player-image{
-    width:110px;
-    height:110px;
-    border-radius:50%;
-    object-fit:cover;
+input,
+select{
     display:block;
-    margin:0 auto 12px;
-    border:3px solid #075bb5;
+    width:100%;
+
+    margin:10px 0;
+    padding:13px;
+
+    box-sizing:border-box;
+
+    border:1px solid #cdd6e4;
+    border-radius:9px;
+
+    outline:none;
+    font-size:15px;
+
+    background:#fff;
 }
 
-.player-card h3{
-    color:#075bb5;
-    margin:7px 0;
+input:focus{
+    border-color:#087cf5;
+    box-shadow:0 0 0 3px rgba(8,124,245,.12);
 }
 
-.player-card p{color:#555}
+/* BUTTON */
 
-.member-image{
-    width:130px;
-    height:130px;
-    border-radius:50%;
-    object-fit:cover;
-    display:block;
-    margin:0 auto 15px;
-    border:4px solid #075bb5;
-}
-
-.profile{text-align:center}
-
-.profile-info{
-    text-align:left;
-    margin-top:15px;
-}
-
-.info-row{
-    padding:11px;
-    border-bottom:1px solid #eee;
-}
-
-.info-row strong{
-    display:inline-block;
-    min-width:135px;
-    color:#075bb5;
-}
-
-.admin-panel{display:none}
-
-.admin-buttons{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:12px;
-    margin-bottom:15px;
-}
-
-.admin-choice{
-    padding:18px 10px;
-    border:0;
-    border-radius:10px;
-    background:#075bb5;
-    color:white;
-    font-weight:bold;
+.action-btn{
+    padding:12px 20px;
     cursor:pointer;
-}
 
-.admin-section{display:none}
-.admin-section.active{display:block}
+    border:none;
+    background:linear-gradient(135deg,#087cf5,#0646a8);
+    color:white;
 
-.blood-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(170px,1fr));
-    gap:15px;
-}
-
-.blood-card{
-    background:white;
-    padding:15px;
-    border-radius:14px;
-    text-align:center;
-    box-shadow:0 3px 12px rgba(0,0,0,.08);
-}
-
-.blood{
-    font-size:28px;
+    border-radius:9px;
+    font-size:15px;
     font-weight:bold;
-    color:#d40000;
-    margin:8px 0;
+
+    box-shadow:0 5px 12px rgba(0,0,0,.2);
 }
 
-.contact-card{
-    background:white;
-    padding:20px;
+.action-btn:hover{
+    filter:brightness(1.1);
+}
+
+/* ADMIN */
+
+.admin-box{
+    background:#f5f8fc;
+    padding:18px;
     border-radius:14px;
-    text-align:center;
-    box-shadow:0 3px 12px rgba(0,0,0,.08);
+    margin-top:15px;
+    border:1px solid #dde5ef;
 }
 
-.contact-card .number{
-    font-size:18px;
-    font-weight:bold;
-    color:#075bb5;
-    margin-top:10px;
+.admin-box h3,
+.admin-box h4{
+    color:#092d70;
 }
 
-.loading{
+/* MEMBER PROFILE */
+
+#member-profile{
+    margin-top:20px;
+}
+
+.profile-box{
     text-align:center;
     padding:20px;
-    color:#777;
+    border-radius:15px;
+    background:linear-gradient(135deg,#f4f8ff,#fff);
+    border:1px solid #dce5f3;
 }
 
-.empty{
-    background:white;
-    padding:25px;
-    text-align:center;
-    border-radius:12px;
-    color:#777;
+.profile-box img{
+    width:120px;
+    height:120px;
+    object-fit:cover;
+    border-radius:50%;
+    border:5px solid #087cf5;
+    box-shadow:0 7px 20px rgba(0,0,0,.2);
 }
+
+/* FOOTER */
 
 footer{
-    background:#071d36;
-    color:white;
     text-align:center;
-    padding:20px;
-    margin-top:30px;
+    padding:25px 10px;
     font-size:13px;
+    color:#fff;
+    text-shadow:0 2px 5px #000;
 }
 
-@media(max-width:600px){
-    header h1{font-size:18px}
-    .admin-buttons{grid-template-columns:1fr}
-    .info-row strong{
-        display:block;
-        margin-bottom:4px;
+/* MOBILE */
+
+@media(max-width:850px){
+
+    nav{
+        grid-template-columns:repeat(3,1fr);
     }
+
 }
+
+@media(max-width:520px){
+
+    .container{
+        width:96%;
+    }
+
+    header{
+        padding-top:18px;
+    }
+
+    .logo{
+        width:70px;
+        height:70px;
+        font-size:34px;
+    }
+
+    header h1{
+        font-size:27px;
+    }
+
+    header p{
+        font-size:11px;
+        letter-spacing:2px;
+    }
+
+    nav{
+        grid-template-columns:repeat(3,1fr);
+        gap:7px;
+        padding:7px;
+    }
+
+    .nav-btn{
+        min-height:72px;
+        font-size:11px;
+    }
+
+    .nav-btn .icon{
+        font-size:24px;
+    }
+
+    .section{
+        padding:13px;
+        border-radius:15px;
+    }
+
+    .card{
+        padding:10px;
+    }
+
+    .card img{
+        width:65px;
+        height:65px;
+    }
+
+}
+
 </style>
 </head>
 
 <body>
 
-<header>
-    <button class="menu-btn" onclick="openMenu()">
-        <span></span>
-        <span></span>
-        <span></span>
-    </button>
+<div class="container">
 
-    <h1>⚽ HORINTATI SPORTS CLUB</h1>
-    <p>Official Sports Club Website</p>
+<header>
+
+    <div class="logo">⚽</div>
+
+    <h1>
+        HORINTATI <span>SPORTS CLUB</span>
+    </h1>
+
+    <p>PLAY • UNITY • BROTHERHOOD</p>
+
 </header>
 
-<div id="overlay" class="overlay" onclick="closeMenu()"></div>
 
-<div id="sideMenu" class="side-menu">
+<!-- ICON MENU -->
 
-    <div class="menu-title">
-        HORINTATI SPORTS CLUB
-        <span class="close-menu" onclick="closeMenu()">×</span>
+<nav>
+
+    <button class="nav-btn notice-btn" onclick="show('notice')">
+        <div class="icon">📢</div>
+        Notice Board
+    </button>
+
+    <button class="nav-btn member-btn" onclick="show('member')">
+        <div class="icon">👤</div>
+        Member Login
+    </button>
+
+    <button class="nav-btn admin-btn" onclick="show('admin')">
+        <div class="icon">⚙️</div>
+        Admin Login
+    </button>
+
+    <button class="nav-btn players-btn" onclick="show('players')">
+        <div class="icon">👥</div>
+        Player List
+    </button>
+
+    <button class="nav-btn contact-btn" onclick="show('contact')">
+        <div class="icon">📞</div>
+        Contact
+    </button>
+
+    <button class="nav-btn blood-btn" onclick="show('blood')">
+        <div class="icon">🩸</div>
+        Blood Group
+    </button>
+
+</nav>
+
+
+<!-- NOTICE -->
+
+<div id="notice" class="section active">
+
+    <h2 class="notice-title">
+        <span>📢 Notice Board</span>
+        <span>⚽</span>
+    </h2>
+
+    <div id="notice-list">
+        কোনো নোটিশ নেই।
     </div>
 
-    <div class="menu-item" onclick="showPage('home')">
-        🏠 Home
-    </div>
-
-    <div class="menu-item" onclick="showPage('notice')">
-        📢 Notice Board
-    </div>
-
-    <div class="menu-item" onclick="showPage('member-login')">
-        👤 Member Login
-    </div>
-
-    <div class="menu-item" onclick="showPage('admin-login')">
-        🔐 Admin Login
-    </div>
-
-    <div class="menu-item" onclick="showPage('players')">
-        ⚽ Player List
-    </div>
-
-    <div class="menu-item" onclick="showPage('contact')">
-        📞 Contact
-    </div>
-
-    <div class="menu-item" onclick="showPage('blood')">
-        🩸 Blood Group
-    </div>
 </div>
 
-<main>
 
-<section id="home" class="page active">
-    <div class="home-box">
-        <h2>⚽ HORINTATI SPORTS CLUB</h2>
-        <p>
-            Welcome to HORINTATI SPORTS CLUB.
-            এখানে ক্লাবের Notice, Member Information,
-            Player List, Blood Group এবং Contact Information
-            দেখা যাবে।
-        </p>
-    </div>
-</section>
+<!-- MEMBER LOGIN -->
 
-<section id="notice" class="page">
-    <div class="form-box">
-        <h2>📢 Notice Board</h2>
-        <div id="notice-list">
-            <div class="loading">Loading notices...</div>
-        </div>
-    </div>
-</section>
+<div id="member" class="section">
 
-<section id="member-login" class="page">
+    <h2>👤 Member Login</h2>
 
-    <div id="member-login-box" class="form-box">
+    <input
+        type="text"
+        id="m-no"
+        placeholder="Member No"
+    >
 
-        <h2>👤 Member Login</h2>
+    <input
+        type="password"
+        id="m-pass"
+        placeholder="Password"
+    >
 
-        <input
-            type="text"
-            id="member-no-login"
-            placeholder="Member No"
-        >
+    <button class="action-btn" onclick="memberLogin()">
+        Login
+    </button>
 
-        <input
-            type="password"
-            id="member-password-login"
-            placeholder="Member Password"
-        >
+    <div id="member-profile"></div>
 
-        <button class="main-btn" onclick="memberLogin()">
-            LOGIN
-        </button>
+</div>
 
-    </div>
 
-    <div id="member-profile-box"
-         class="form-box"
-         style="display:none">
+<!-- ADMIN -->
 
-        <div id="member-profile"></div>
+<div id="admin" class="section">
 
-        <br>
+    <h2>⚙️ Admin Login</h2>
 
-        <button class="main-btn"
-                onclick="memberLogout()">
-            LOGOUT
-        </button>
-
-    </div>
-
-</section>
-
-<section id="admin-login" class="page">
-
-    <div id="admin-login-form" class="form-box">
-
-        <h2>🔐 Admin Login</h2>
+    <div id="admin-auth">
 
         <input
             type="password"
@@ -448,665 +566,559 @@ footer{
             placeholder="Admin Password"
         >
 
-        <button class="main-btn"
-                onclick="adminLogin()">
-            ADMIN LOGIN
+        <button class="action-btn" onclick="adminLogin()">
+            Login
         </button>
 
     </div>
 
-    <div id="admin-panel" class="form-box admin-panel">
 
-        <h2>⚙️ Admin Panel</h2>
+    <div id="admin-panel"
+         class="admin-box"
+         style="display:none;">
 
-        <div class="admin-buttons">
+        <h3>Admin Dashboard</h3>
 
-            <button
-                class="admin-choice"
-                onclick="showAdminSection('add-notice')">
-                01. ADD NOTICE
-            </button>
 
-            <button
-                class="admin-choice"
-                onclick="showAdminSection('add-member')">
-                02. ADD MEMBER
-            </button>
+        <h4>📢 Add Notice</h4>
 
-        </div>
+        <input
+            type="text"
+            id="new-notice"
+            placeholder="Notice Text"
+        >
 
-        <div id="add-notice"
-             class="admin-section">
+        <button class="action-btn" onclick="addNotice()">
+            Add Notice
+        </button>
 
-            <h3>Add Notice</h3>
 
-            <input
-                type="text"
-                id="notice-title"
-                placeholder="Notice Title"
-            >
+        <h4>👤 Add Member</h4>
 
-            <textarea
-                id="notice-desc"
-                placeholder="Notice Description">
-            </textarea>
+        <input
+            type="file"
+            id="new-pic"
+            accept="image/*"
+        >
 
-            <button
-                class="main-btn"
-                onclick="addNotice()">
-                PUBLISH NOTICE
-            </button>
+        <input
+            type="text"
+            id="new-name"
+            placeholder="Member Name"
+        >
 
-        </div>
+        <input
+            type="text"
+            id="new-jersey"
+            placeholder="Jersey Number"
+        >
 
-        <div id="add-member"
-             class="admin-section">
+        <input
+            type="text"
+            id="new-pos"
+            placeholder="Position"
+        >
 
-            <h3>Add Member</h3>
+        <input
+            type="text"
+            id="new-mno"
+            placeholder="Member No"
+        >
 
-            <label>MEMBER PIC</label>
+        <input
+            type="password"
+            id="new-mpass"
+            placeholder="Member Password"
+        >
 
-            <input
-                type="file"
-                id="member-pic"
-                accept="image/*"
-            >
+        <input
+            type="text"
+            id="new-blood"
+            placeholder="Blood Group"
+        >
 
-            <input
-                type="text"
-                id="member-name"
-                placeholder="MEMBER NAME"
-            >
+        <input
+            type="text"
+            id="new-phone"
+            placeholder="Contact No"
+        >
 
-            <input
-                type="text"
-                id="jersey-number"
-                placeholder="JERSY NUMBER"
-            >
-
-            <input
-                type="text"
-                id="member-position"
-                placeholder="POSITION"
-            >
-
-            <input
-                type="text"
-                id="member-no"
-                placeholder="MEMBER NO"
-            >
-
-            <input
-                type="password"
-                id="member-password"
-                placeholder="MEMBER PASSWORD"
-            >
-
-            <select id="member-blood">
-                <option value="">Member Blood</option>
-                <option value="A+">A+</option>
-                <option value="A-">A-</option>
-                <option value="B+">B+</option>
-                <option value="B-">B-</option>
-                <option value="AB+">AB+</option>
-                <option value="AB-">AB-</option>
-                <option value="O+">O+</option>
-                <option value="O-">O-</option>
-            </select>
-
-            <input
-                type="tel"
-                id="member-contact"
-                placeholder="Contact No"
-            >
-
-            <button
-                class="main-btn"
-                onclick="addMember()">
-                ADD MEMBER
-            </button>
-
-        </div>
-
-        <br>
-
-        <button
-            class="main-btn"
-            onclick="adminLogout()">
-            ADMIN LOGOUT
+        <button class="action-btn" onclick="addMember()">
+            Add Member
         </button>
 
     </div>
 
-</section>
+</div>
 
-<section id="players" class="page">
 
-    <div class="form-box">
+<!-- PLAYERS -->
 
-        <h2>⚽ Player List</h2>
+<div id="players" class="section">
 
-        <div id="player-list"
-             class="player-grid">
+    <h2>👥 Player List</h2>
 
-            <div class="loading">
-                Loading players...
-            </div>
+    <div id="player-list"></div>
 
-        </div>
+</div>
 
-    </div>
 
-</section>
+<!-- CONTACT -->
 
-<section id="contact" class="page">
+<div id="contact" class="section">
 
-    <div class="form-box">
+    <h2>📞 Contact</h2>
 
-        <h2>📞 Contact</h2>
+    <div id="contact-list"></div>
 
-        <div id="contact-list"
-             class="player-grid">
+</div>
 
-            <div class="loading">
-                Loading contacts...
-            </div>
 
-        </div>
+<!-- BLOOD -->
 
-    </div>
+<div id="blood" class="section">
 
-</section>
+    <h2>🩸 Blood Group</h2>
 
-<section id="blood" class="page">
+    <div id="blood-list"></div>
 
-    <div class="form-box">
+</div>
 
-        <h2>🩸 Blood Group</h2>
-
-        <div id="blood-list"
-             class="blood-grid">
-
-            <div class="loading">
-                Loading blood groups...
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
-</main>
 
 <footer>
-    © 2026 HORINTATI SPORTS CLUB
+    © HORINTATI SPORTS CLUB
 </footer>
 
-
-<script type="module">
-
-/* =====================================================
-   FIREBASE
-   তোমার আগের Firebase Database URL অপরিবর্তিত
-===================================================== */
-
-import {
-    initializeApp
-} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-
-import {
-    getDatabase,
-    ref,
-    set,
-    push,
-    onValue,
-    get
-} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+</div>
 
 
-const app = initializeApp({
+<script>
 
+/* =========================================================
+   FIREBASE CONFIG
+   তোমার Firebase URL একদম অপরিবর্তিত রাখা হয়েছে
+========================================================= */
+
+const firebaseConfig = {
     databaseURL:
-    "https://horintati-sports-club-9e801-default-rtdb.firebaseio.com"
-
-});
-
-const db = getDatabase(app);
-
-
-/* =====================================================
-   MENU
-===================================================== */
-
-window.openMenu = function(){
-
-    document
-    .getElementById("sideMenu")
-    .classList.add("active");
-
-    document
-    .getElementById("overlay")
-    .classList.add("active");
-
+    "https://horintati-sports-club-default-rtdb.firebaseio.com"
 };
 
-window.closeMenu = function(){
+firebase.initializeApp(firebaseConfig);
+
+const db = firebase.database();
+
+
+/* =========================================================
+   SECTION SHOW
+========================================================= */
+
+function show(id){
 
     document
-    .getElementById("sideMenu")
-    .classList.remove("active");
+    .querySelectorAll('.section')
+    .forEach(function(section){
 
-    document
-    .getElementById("overlay")
-    .classList.remove("active");
-
-};
-
-
-/* =====================================================
-   PAGE
-===================================================== */
-
-window.showPage = function(id){
-
-    document
-    .querySelectorAll(".page")
-    .forEach(function(page){
-
-        page.classList.remove("active");
+        section.classList.remove('active');
 
     });
 
     document
     .getElementById(id)
-    .classList.add("active");
+    .classList.add('active');
 
-    closeMenu();
+}
 
-    window.scrollTo({
-        top:0,
-        behavior:"smooth"
+
+/* =========================================================
+   LIVE NOTICE DATA
+========================================================= */
+
+db.ref('notices').on('value', function(snap){
+
+    let html = '';
+
+    snap.forEach(function(child){
+
+        html += `
+            <div class="notice-item">
+                📢 ${child.val()}
+            </div>
+        `;
+
     });
 
-};
+    document.getElementById('notice-list').innerHTML =
+        html || 'কোনো নোটিশ নেই।';
+
+});
 
 
-/* =====================================================
+/* =========================================================
+   LIVE MEMBERS DATA
+========================================================= */
+
+db.ref('members').on('value', function(snap){
+
+    let playersHtml = '';
+    let contactHtml = '';
+    let bloodHtml = '';
+
+    snap.forEach(function(child){
+
+        let m = child.val();
+
+        let img = m.pic
+            ? `<img src="${m.pic}" alt="Player">`
+            : '';
+
+        playersHtml += `
+            <div class="card">
+
+                ${img}
+
+                <div>
+
+                    <h3>${m.name || ''}</h3>
+
+                    <p>
+                        <strong>Jersey:</strong>
+                        ${m.jersey || ''}
+                    </p>
+
+                    <p>
+                        <strong>Position:</strong>
+                        ${m.pos || ''}
+                    </p>
+
+                </div>
+
+            </div>
+        `;
+
+
+        contactHtml += `
+            <div class="card">
+
+                ${img}
+
+                <div>
+
+                    <h3>${m.name || ''}</h3>
+
+                    <p>
+                        📞 <strong>Phone:</strong>
+                        ${m.phone || ''}
+                    </p>
+
+                </div>
+
+            </div>
+        `;
+
+
+        bloodHtml += `
+            <div class="card">
+
+                ${img}
+
+                <div>
+
+                    <h3>${m.name || ''}</h3>
+
+                    <p>
+                        🩸 <strong>Blood Group:</strong>
+                        ${m.blood || ''}
+                    </p>
+
+                </div>
+
+            </div>
+        `;
+
+    });
+
+
+    document.getElementById('player-list').innerHTML =
+        playersHtml;
+
+    document.getElementById('contact-list').innerHTML =
+        contactHtml;
+
+    document.getElementById('blood-list').innerHTML =
+        bloodHtml;
+
+});
+
+
+/* =========================================================
    ADMIN LOGIN
-===================================================== */
+   আগের Password অপরিবর্তিত
+========================================================= */
 
-window.adminLogin = function(){
+function adminLogin(){
 
-    const password =
-        document
-        .getElementById("admin-pass")
-        .value;
+    if(
+        document.getElementById('admin-pass').value
+        === '@#$@#$@#$'
+    ){
 
-    if(password === "@#$@#$@#$"){
+        document.getElementById('admin-auth')
+        .style.display = 'none';
 
-        alert("Admin Login Successful!");
-
-        document
-        .getElementById("admin-login-form")
-        .style.display = "none";
-
-        document
-        .getElementById("admin-panel")
-        .style.display = "block";
+        document.getElementById('admin-panel')
+        .style.display = 'block';
 
     }else{
 
-        alert("Wrong Admin Password!");
+        alert('ভুল পাসওয়ার্ড!');
 
     }
 
-};
+}
 
 
-/* =====================================================
-   ADMIN LOGOUT
-===================================================== */
+/* =========================================================
+   ADD NOTICE
+========================================================= */
 
-window.adminLogout = function(){
+function addNotice(){
 
-    document
-    .getElementById("admin-login-form")
-    .style.display = "block";
+    let text =
+        document.getElementById('new-notice').value;
 
-    document
-    .getElementById("admin-panel")
-    .style.display = "none";
+    if(text){
 
-    document
-    .getElementById("admin-pass")
-    .value = "";
+        db.ref('notices').push(
+            text,
+            function(){
 
-};
+                alert('নোটিশ যুক্ত হয়েছে!');
 
+                document.getElementById(
+                    'new-notice'
+                ).value = '';
 
-/* =====================================================
-   ADMIN SECTION
-===================================================== */
+            }
+        );
 
-window.showAdminSection = function(section){
+    }
 
-    document
-    .querySelectorAll(".admin-section")
-    .forEach(function(item){
-
-        item.classList.remove("active");
-
-    });
-
-    document
-    .getElementById(section)
-    .classList.add("active");
-
-};
+}
 
 
-/* =====================================================
-   IMAGE TO BASE64
-===================================================== */
+/* =========================================================
+   ADD MEMBER
+========================================================= */
 
-function imageToBase64(file){
+function addMember(){
 
-    return new Promise(function(resolve,reject){
+    let file =
+        document.getElementById('new-pic')
+        .files[0];
 
-        const reader = new FileReader();
+    let name =
+        document.getElementById('new-name')
+        .value;
 
-        reader.onload = function(){
+    let jersey =
+        document.getElementById('new-jersey')
+        .value;
 
-            resolve(reader.result);
+    let pos =
+        document.getElementById('new-pos')
+        .value;
+
+    let mno =
+        document.getElementById('new-mno')
+        .value;
+
+    let mpass =
+        document.getElementById('new-mpass')
+        .value;
+
+    let blood =
+        document.getElementById('new-blood')
+        .value;
+
+    let phone =
+        document.getElementById('new-phone')
+        .value;
+
+
+    if(!mno || !mpass){
+
+        alert(
+            'Member No এবং Password আবশ্যক!'
+        );
+
+        return;
+
+    }
+
+
+    let save = function(picData){
+
+        db.ref('members/' + mno).set({
+
+            name: name,
+
+            jersey: jersey,
+
+            pos: pos,
+
+            mno: mno,
+
+            mpass: mpass,
+
+            blood: blood,
+
+            phone: phone,
+
+            pic: picData || ''
+
+        }, function(){
+
+            alert('মেম্বার যুক্ত হয়েছে!');
+
+
+            document
+            .getElementById('admin-panel')
+            .querySelectorAll('input')
+            .forEach(function(i){
+
+                i.value = '';
+
+            });
+
+        });
+
+    };
+
+
+    if(file){
+
+        let r = new FileReader();
+
+        r.onload = function(e){
+
+            save(e.target.result);
 
         };
 
-        reader.onerror = function(){
+        r.readAsDataURL(file);
 
-            reject(reader.error);
+    }else{
 
-        };
+        save('');
 
-        reader.readAsDataURL(file);
+    }
+
+}
+
+
+/* =========================================================
+   MEMBER LOGIN
+========================================================= */
+
+function memberLogin(){
+
+    let mno =
+        document.getElementById('m-no').value;
+
+    let pass =
+        document.getElementById('m-pass').value;
+
+
+    db.ref('members/' + mno)
+    .once('value', function(snap){
+
+        let m = snap.val();
+
+
+        if(m && m.mpass === pass){
+
+            let img = m.pic
+                ? `
+                    <img
+                        src="${m.pic}"
+                        alt="Member"
+                    >
+                  `
+                : '';
+
+
+            document.getElementById(
+                'member-profile'
+            ).innerHTML = `
+
+                <div class="profile-box">
+
+                    ${img}
+
+                    <h3>
+                        ${m.name || ''}
+                    </h3>
+
+                    <p>
+                        <strong>
+                            MEMBER NAME:
+                        </strong>
+                        ${m.name || ''}
+                    </p>
+
+                    <p>
+                        <strong>
+                            JERSY NUMBER:
+                        </strong>
+                        ${m.jersey || ''}
+                    </p>
+
+                    <p>
+                        <strong>
+                            POSITION:
+                        </strong>
+                        ${m.pos || ''}
+                    </p>
+
+                    <p>
+                        <strong>
+                            MEMBER NO:
+                        </strong>
+                        ${m.mno || ''}
+                    </p>
+
+                    <p>
+                        <strong>
+                            Blood group:
+                        </strong>
+                        ${m.blood || ''}
+                    </p>
+
+                    <p>
+                        <strong>
+                            Contact no:
+                        </strong>
+                        ${m.phone || ''}
+                    </p>
+
+                </div>
+
+            `;
+
+        }else{
+
+            alert(
+                'ভুল Member No অথবা Password!'
+            );
+
+        }
 
     });
 
 }
 
+</script>
 
-/* =====================================================
-   ADD NOTICE
-===================================================== */
-
-window.addNotice = function(){
-
-    const title =
-        document
-        .getElementById("notice-title")
-        .value.trim();
-
-    const desc =
-        document
-        .getElementById("notice-desc")
-        .value.trim();
-
-
-    if(!title || !desc){
-
-        alert("সব ঘর পূরণ করুন!");
-
-        return;
-
-    }
-
-
-    push(
-        ref(db,"notices"),
-        {
-
-            title:title,
-
-            desc:desc,
-
-            text:desc,
-
-            date:
-            new Date()
-            .toLocaleString("bn-BD")
-
-        }
-
-    )
-    .then(function(){
-
-        alert("নোটিশ সফলভাবে যোগ হয়েছে!");
-
-        document
-        .getElementById("notice-title")
-        .value = "";
-
-        document
-        .getElementById("notice-desc")
-        .value = "";
-
-    })
-    .catch(function(error){
-
-        alert(
-            "Notice Error: " +
-            error.message
-        );
-
-    });
-
-};
-
-
-/* =====================================================
-   ADD MEMBER
-   পুরোনো structure compatible রাখার চেষ্টা করা হয়েছে
-===================================================== */
-
-window.addMember = async function(){
-
-    const file =
-        document
-        .getElementById("member-pic")
-        .files[0];
-
-    const name =
-        document
-        .getElementById("member-name")
-        .value.trim();
-
-    const jersey =
-        document
-        .getElementById("jersey-number")
-        .value.trim();
-
-    const position =
-        document
-        .getElementById("member-position")
-        .value.trim();
-
-    const memberNo =
-        document
-        .getElementById("member-no")
-        .value.trim();
-
-    const password =
-        document
-        .getElementById("member-password")
-        .value;
-
-    const blood =
-        document
-        .getElementById("member-blood")
-        .value;
-
-    const contact =
-        document
-        .getElementById("member-contact")
-        .value.trim();
-
-
-    if(
-        !file ||
-        !name ||
-        !jersey ||
-        !position ||
-        !memberNo ||
-        !password ||
-        !blood ||
-        !contact
-    ){
-
-        alert(
-            "সব তথ্য পূরণ করুন এবং ছবি দিন!"
-        );
-
-        return;
-
-    }
-
-
-    try{
-
-        const image =
-            await imageToBase64(file);
-
-
-        /*
-          পুরোনো Firebase structure:
-          members / MEMBER_NO
-
-          তাই নতুন member-ও একই Member No
-          দিয়ে save হবে।
-        */
-
-        await set(
-            ref(
-                db,
-                "members/" + memberNo
-            ),
-            {
-
-                name:name,
-
-                jersey:jersey,
-
-                position:position,
-
-                password:password,
-
-                pic:image,
-
-                /* নতুন তথ্য */
-
-                memberNo:memberNo,
-
-                blood:blood,
-
-                contact:contact,
-
-                /* নতুন image field-ও রাখা হচ্ছে */
-
-                image:image,
-
-                createdAt:
-                new Date().toISOString()
-
-            }
-        );
-
-
-        alert(
-            "Member সফলভাবে যোগ হয়েছে!"
-        );
-
-
-        document
-        .getElementById("member-pic")
-        .value = "";
-
-        document
-        .getElementById("member-name")
-        .value = "";
-
-        document
-        .getElementById("jersey-number")
-        .value = "";
-
-        document
-        .getElementById("member-position")
-        .value = "";
-
-        document
-        .getElementById("member-no")
-        .value = "";
-
-        document
-        .getElementById("member-password")
-        .value = "";
-
-        document
-        .getElementById("member-blood")
-        .value = "";
-
-        document
-        .getElementById("member-contact")
-        .value = "";
-
-
-    }catch(error){
-
-        alert(
-            "Member Error: " +
-            error.message
-        );
-
-    }
-
-};
-
-
-/* =====================================================
-   MEMBER LOGIN
-===================================================== */
-
-window.memberLogin = async function(){
-
-    const memberNo =
-        document
-        .getElementById("member-no-login")
-        .value.trim();
-
-    const password =
-        document
-        .getElementById("member-password-login")
-        .value;
-
-
-    if(!memberNo || !password){
-
-        alert(
-            "Member No এবং Password দিন!"
-        );
-
-        return;
-
-    }
-
-
-    try{
-
-        /*
-          পুরোনো database structure:
-          members/MEMBER_NO
-        */
-
-        const snapshot =
-            await get(
-                ref(
-                    db
+</body>
+            </html>
