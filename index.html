@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HORINTATI SPORTS CLUB</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
+
+body{
+    background:#eef3f7;
+    color:#222;
+}
+
+header{
+    background:linear-gradient(135deg,#071d36,#0b5cab);
+    color:white;
+    padding:18px 15px;
+    text-align:center;
+    position:sticky;
+    top:0;
+    z-index:1000;
+    box-shadow:0 3px 10px rgba(0,0,0,.25);
+}
+
+header h1{font-size:23px;letter-spacing:1px}
+header p{margin-top:5px;font-size:12px;opacity:.9}
+
+.menu-btn{
+    position:absolute;
+    left:15px;
+    top:18px;
+    width:38px;
+    height:34px;
+    background:white;
+    border:0;
+    border-radius:7px;
+    cursor:pointer;
+}
+
+.menu-btn span{
+    display:block;
+    width:22px;
+    height:3px;
+    background:#0b5cab;
+    margin:4px auto;
+    border-radius:5px;
+}
+
+.side-menu{
+    position:fixed;
+    left:-290px;
+    top:0;
+    width:280px;
+    height:100vh;
+    background:white;
+    z-index:3000;
+    box-shadow:5px 0 20px rgba(0,0,0,.3);
+    transition:.3s;
+    overflow-y:auto;
+}
+
+.side-menu.active{left:0}
+
+.menu-title{
+    background:#071d36;
+    color:white;
+    padding:25px 18px;
+    font-size:20px;
+    font-weight:bold;
+}
+
+.menu-item{
+    padding:18px;
+    border-bottom:1px solid #eee;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.menu-item:hover{
+    background:#eaf3ff;
+    color:#075bb5;
+}
+
+.close-menu{
+    float:right;
+    cursor:pointer;
+    font-size:22px;
+}
+
+.overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.45);
+    display:none;
+    z-index:2000;
+}
+
+.overlay.active{display:block}
+
+main{
+    max-width:1000px;
+    margin:auto;
+    padding:20px 15px 50px;
+}
+
+.page{display:none}
+.page.active{display:block}
+
+.home-box,
+.form-box{
+    background:white;
+    padding:22px;
+    border-radius:15px;
+    box-shadow:0 3px 15px rgba(0,0,0,.08);
+    margin-top:15px;
+}
+
+.home-box{text-align:center;padding:35px 20px}
+.home-box h2{color:#075bb5;margin-bottom:10px}
+.home-box p{line-height:1.7}
+
+.form-box h2{
+    margin-bottom:18px;
+    color:#075bb5;
+}
+
+input,select,textarea{
+    width:100%;
+    padding:13px;
+    margin:7px 0 13px;
+    border:1px solid #ccd5df;
+    border-radius:8px;
+    outline:none;
+    font-size:15px;
+}
+
+textarea{
+    min-height:100px;
+    resize:vertical;
+}
+
+button.main-btn{
+    width:100%;
+    padding:13px;
+    border:0;
+    border-radius:8px;
+    background:#075bb5;
+    color:white;
+    font-weight:bold;
+    font-size:15px;
+    cursor:pointer;
+}
+
+button.main-btn:hover{background:#064989}
+
+.card{
+    background:white;
+    border-radius:14px;
+    padding:18px;
+    margin:12px 0;
+    box-shadow:0 3px 12px rgba(0,0,0,.08);
+}
+
+.card h3{
+    color:#075bb5;
+    margin-bottom:8px;
+}
+
+.card p{line-height:1.6}
+
+.player-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+    gap:15px;
+}
+
+.player-card{
+    background:white;
+    padding:15px;
+    border-radius:14px;
+    text-align:center;
+    box-shadow:0 3px 12px rgba(0,0,0,.08);
+}
+
+.player-image{
+    width:110px;
+    height:110px;
+    border-radius:50%;
+    object-fit:cover;
+    display:block;
+    margin:0 auto 12px;
+    border:3px solid #075bb5;
+}
+
+.player-card h3{
+    color:#075bb5;
+    margin:7px 0;
+}
+
+.player-card p{color:#555}
+
+.member-image{
+    width:130px;
+    height:130px;
+    border-radius:50%;
+    object-fit:cover;
+    display:block;
+    margin:0 auto 15px;
+    border:4px solid #075bb5;
+}
+
+.profile{text-align:center}
+
+.profile-info{
+    text-align:left;
+    margin-top:15px;
+}
+
+.info-row{
+    padding:11px;
+    border-bottom:1px solid #eee;
+}
+
+.info-row strong{
+    display:inline-block;
+    min-width:135px;
+    color:#075bb5;
+}
+
+.admin-panel{display:none}
+
+.admin-buttons{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+    margin-bottom:15px;
+}
+
+.admin-choice{
+    padding:18px 10px;
+    border:0;
+    border-radius:10px;
+    background:#075bb5;
+    color:white;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.admin-section{display:none}
+.admin-section.active{display:block}
+
+.blood-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(170px,1fr));
+    gap:15px;
+}
+
+.blood-card{
+    background:white;
+    padding:15px;
+    border-radius:14px;
+    text-align:center;
+    box-shadow:0 3px 12px rgba(0,0,0,.08);
+}
+
+.blood{
+    font-size:28px;
+    font-weight:bold;
+    color:#d40000;
+    margin:8px 0;
+}
+
+.contact-card{
+    background:white;
+    padding:20px;
+    border-radius:14px;
+    text-align:center;
+    box-shadow:0 3px 12px rgba(0,0,0,.08);
+}
+
+.contact-card .number{
+    font-size:18px;
+    font-weight:bold;
+    color:#075bb5;
+    margin-top:10px;
+}
+
+.loading{
+    text-align:center;
+    padding:20px;
+    color:#777;
+}
+
+.empty{
+    background:white;
+    padding:25px;
+    text-align:center;
+    border-radius:12px;
+    color:#777;
+}
+
+footer{
+    background:#071d36;
+    color:white;
+    text-align:center;
+    padding:20px;
+    margin-top:30px;
+    font-size:13px;
+}
+
+@media(max-width:600px){
+    header h1{font-size:18px}
+    .admin-buttons{grid-template-columns:1fr}
+    .info-row strong{
+        display:block;
+        margin-bottom:4px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <button class="menu-btn" onclick="openMenu()">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
+    <h1>⚽ HORINTATI SPORTS CLUB</h1>
+    <p>Official Sports Club Website</p>
+</header>
+
+<div id="overlay" class="overlay" onclick="closeMenu()"></div>
+
+<div id="sideMenu" class="side-menu">
+
+    <div class="menu-title">
+        HORINTATI SPORTS CLUB
+        <span class="close-menu" onclick="closeMenu()">×</span>
+    </div>
+
+    <div class="menu-item" onclick="showPage('home')">
+        🏠 Home
+    </div>
+
+    <div class="menu-item" onclick="showPage('notice')">
+        📢 Notice Board
+    </div>
+
+    <div class="menu-item" onclick="showPage('member-login')">
+        👤 Member Login
+    </div>
+
+    <div class="menu-item" onclick="showPage('admin-login')">
+        🔐 Admin Login
+    </div>
+
+    <div class="menu-item" onclick="showPage('players')">
+        ⚽ Player List
+    </div>
+
+    <div class="menu-item" onclick="showPage('contact')">
+        📞 Contact
+    </div>
+
+    <div class="menu-item" onclick="showPage('blood')">
+        🩸 Blood Group
+    </div>
+</div>
+
+<main>
+
+<section id="home" class="page active">
+    <div class="home-box">
+        <h2>⚽ HORINTATI SPORTS CLUB</h2>
+        <p>
+            Welcome to HORINTATI SPORTS CLUB.
+            এখানে ক্লাবের Notice, Member Information,
+            Player List, Blood Group এবং Contact Information
+            দেখা যাবে।
+        </p>
+    </div>
+</section>
+
+<section id="notice" class="page">
+    <div class="form-box">
+        <h2>📢 Notice Board</h2>
+        <div id="notice-list">
+            <div class="loading">Loading notices...</div>
+        </div>
+    </div>
+</section>
+
+<section id="member-login" class="page">
+
+    <div id="member-login-box" class="form-box">
+
+        <h2>👤 Member Login</h2>
+
+        <input
+            type="text"
+            id="member-no-login"
+            placeholder="Member No"
+        >
+
+        <input
+            type="password"
+            id="member-password-login"
+            placeholder="Member Password"
+        >
+
+        <button class="main-btn" onclick="memberLogin()">
+            LOGIN
+        </button>
+
+    </div>
+
+    <div id="member-profile-box"
+         class="form-box"
+         style="display:none">
+
+        <div id="member-profile"></div>
+
+        <br>
+
+        <button class="main-btn"
+                onclick="memberLogout()">
+            LOGOUT
+        </button>
+
+    </div>
+
+</section>
+
+<section id="admin-login" class="page">
+
+    <div id="admin-login-form" class="form-box">
+
+        <h2>🔐 Admin Login</h2>
+
+        <input
+            type="password"
+            id="admin-pass"
+            placeholder="Admin Password"
+        >
+
+        <button class="main-btn"
+                onclick="adminLogin()">
+            ADMIN LOGIN
+        </button>
+
+    </div>
+
+    <div id="admin-panel" class="form-box admin-panel">
+
+        <h2>⚙️ Admin Panel</h2>
+
+        <div class="admin-buttons">
+
+            <button
+                class="admin-choice"
+                onclick="showAdminSection('add-notice')">
+                01. ADD NOTICE
+            </button>
+
+            <button
+                class="admin-choice"
+                onclick="showAdminSection('add-member')">
+                02. ADD MEMBER
+            </button>
+
+        </div>
+
+        <div id="add-notice"
+             class="admin-section">
+
+            <h3>Add Notice</h3>
+
+            <input
+                type="text"
+                id="notice-title"
+                placeholder="Notice Title"
+            >
+
+            <textarea
+                id="notice-desc"
+                placeholder="Notice Description">
+            </textarea>
+
+            <button
+                class="main-btn"
+                onclick="addNotice()">
+                PUBLISH NOTICE
+            </button>
+
+        </div>
+
+        <div id="add-member"
+             class="admin-section">
+
+            <h3>Add Member</h3>
+
+            <label>MEMBER PIC</label>
+
+            <input
+                type="file"
+                id="member-pic"
+                accept="image/*"
+            >
+
+            <input
+                type="text"
+                id="member-name"
+                placeholder="MEMBER NAME"
+            >
+
+            <input
+                type="text"
+                id="jersey-number"
+                placeholder="JERSY NUMBER"
+            >
+
+            <input
+                type="text"
+                id="member-position"
+                placeholder="POSITION"
+            >
+
+            <input
+                type="text"
+                id="member-no"
+                placeholder="MEMBER NO"
+            >
+
+            <input
+                type="password"
+                id="member-password"
+                placeholder="MEMBER PASSWORD"
+            >
+
+            <select id="member-blood">
+                <option value="">Member Blood</option>
+                <option value="A+">A+</option>
+                <option value="A-">A-</option>
+                <option value="B+">B+</option>
+                <option value="B-">B-</option>
+                <option value="AB+">AB+</option>
+                <option value="AB-">AB-</option>
+                <option value="O+">O+</option>
+                <option value="O-">O-</option>
+            </select>
+
+            <input
+                type="tel"
+                id="member-contact"
+                placeholder="Contact No"
+            >
+
+            <button
+                class="main-btn"
+                onclick="addMember()">
+                ADD MEMBER
+            </button>
+
+        </div>
+
+        <br>
+
+        <button
+            class="main-btn"
+            onclick="adminLogout()">
+            ADMIN LOGOUT
+        </button>
+
+    </div>
+
+</section>
+
+<section id="players" class="page">
+
+    <div class="form-box">
+
+        <h2>⚽ Player List</h2>
+
+        <div id="player-list"
+             class="player-grid">
+
+            <div class="loading">
+                Loading players...
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<section id="contact" class="page">
+
+    <div class="form-box">
+
+        <h2>📞 Contact</h2>
+
+        <div id="contact-list"
+             class="player-grid">
+
+            <div class="loading">
+                Loading contacts...
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<section id="blood" class="page">
+
+    <div class="form-box">
+
+        <h2>🩸 Blood Group</h2>
+
+        <div id="blood-list"
+             class="blood-grid">
+
+            <div class="loading">
+                Loading blood groups...
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+</main>
+
+<footer>
+    © 2026 HORINTATI SPORTS CLUB
+</footer>
+
+
+<script type="module">
+
+/* =====================================================
+   FIREBASE
+   তোমার আগের Firebase Database URL অপরিবর্তিত
+===================================================== */
+
+import {
+    initializeApp
+} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+
+import {
+    getDatabase,
+    ref,
+    set,
+    push,
+    onValue,
+    get
+} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+
+const app = initializeApp({
+
+    databaseURL:
+    "https://horintati-sports-club-9e801-default-rtdb.firebaseio.com"
+
+});
+
+const db = getDatabase(app);
+
+
+/* =====================================================
+   MENU
+===================================================== */
+
+window.openMenu = function(){
+
+    document
+    .getElementById("sideMenu")
+    .classList.add("active");
+
+    document
+    .getElementById("overlay")
+    .classList.add("active");
+
+};
+
+window.closeMenu = function(){
+
+    document
+    .getElementById("sideMenu")
+    .classList.remove("active");
+
+    document
+    .getElementById("overlay")
+    .classList.remove("active");
+
+};
+
+
+/* =====================================================
+   PAGE
+===================================================== */
+
+window.showPage = function(id){
+
+    document
+    .querySelectorAll(".page")
+    .forEach(function(page){
+
+        page.classList.remove("active");
+
+    });
+
+    document
+    .getElementById(id)
+    .classList.add("active");
+
+    closeMenu();
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+
+};
+
+
+/* =====================================================
+   ADMIN LOGIN
+===================================================== */
+
+window.adminLogin = function(){
+
+    const password =
+        document
+        .getElementById("admin-pass")
+        .value;
+
+    if(password === "@#$@#$@#$"){
+
+        alert("Admin Login Successful!");
+
+        document
+        .getElementById("admin-login-form")
+        .style.display = "none";
+
+        document
+        .getElementById("admin-panel")
+        .style.display = "block";
+
+    }else{
+
+        alert("Wrong Admin Password!");
+
+    }
+
+};
+
+
+/* =====================================================
+   ADMIN LOGOUT
+===================================================== */
+
+window.adminLogout = function(){
+
+    document
+    .getElementById("admin-login-form")
+    .style.display = "block";
+
+    document
+    .getElementById("admin-panel")
+    .style.display = "none";
+
+    document
+    .getElementById("admin-pass")
+    .value = "";
+
+};
+
+
+/* =====================================================
+   ADMIN SECTION
+===================================================== */
+
+window.showAdminSection = function(section){
+
+    document
+    .querySelectorAll(".admin-section")
+    .forEach(function(item){
+
+        item.classList.remove("active");
+
+    });
+
+    document
+    .getElementById(section)
+    .classList.add("active");
+
+};
+
+
+/* =====================================================
+   IMAGE TO BASE64
+===================================================== */
+
+function imageToBase64(file){
+
+    return new Promise(function(resolve,reject){
+
+        const reader = new FileReader();
+
+        reader.onload = function(){
+
+            resolve(reader.result);
+
+        };
+
+        reader.onerror = function(){
+
+            reject(reader.error);
+
+        };
+
+        reader.readAsDataURL(file);
+
+    });
+
+}
+
+
+/* =====================================================
+   ADD NOTICE
+===================================================== */
+
+window.addNotice = function(){
+
+    const title =
+        document
+        .getElementById("notice-title")
+        .value.trim();
+
+    const desc =
+        document
+        .getElementById("notice-desc")
+        .value.trim();
+
+
+    if(!title || !desc){
+
+        alert("সব ঘর পূরণ করুন!");
+
+        return;
+
+    }
+
+
+    push(
+        ref(db,"notices"),
+        {
+
+            title:title,
+
+            desc:desc,
+
+            text:desc,
+
+            date:
+            new Date()
+            .toLocaleString("bn-BD")
+
+        }
+
+    )
+    .then(function(){
+
+        alert("নোটিশ সফলভাবে যোগ হয়েছে!");
+
+        document
+        .getElementById("notice-title")
+        .value = "";
+
+        document
+        .getElementById("notice-desc")
+        .value = "";
+
+    })
+    .catch(function(error){
+
+        alert(
+            "Notice Error: " +
+            error.message
+        );
+
+    });
+
+};
+
+
+/* =====================================================
+   ADD MEMBER
+   পুরোনো structure compatible রাখার চেষ্টা করা হয়েছে
+===================================================== */
+
+window.addMember = async function(){
+
+    const file =
+        document
+        .getElementById("member-pic")
+        .files[0];
+
+    const name =
+        document
+        .getElementById("member-name")
+        .value.trim();
+
+    const jersey =
+        document
+        .getElementById("jersey-number")
+        .value.trim();
+
+    const position =
+        document
+        .getElementById("member-position")
+        .value.trim();
+
+    const memberNo =
+        document
+        .getElementById("member-no")
+        .value.trim();
+
+    const password =
+        document
+        .getElementById("member-password")
+        .value;
+
+    const blood =
+        document
+        .getElementById("member-blood")
+        .value;
+
+    const contact =
+        document
+        .getElementById("member-contact")
+        .value.trim();
+
+
+    if(
+        !file ||
+        !name ||
+        !jersey ||
+        !position ||
+        !memberNo ||
+        !password ||
+        !blood ||
+        !contact
+    ){
+
+        alert(
+            "সব তথ্য পূরণ করুন এবং ছবি দিন!"
+        );
+
+        return;
+
+    }
+
+
+    try{
+
+        const image =
+            await imageToBase64(file);
+
+
+        /*
+          পুরোনো Firebase structure:
+          members / MEMBER_NO
+
+          তাই নতুন member-ও একই Member No
+          দিয়ে save হবে।
+        */
+
+        await set(
+            ref(
+                db,
+                "members/" + memberNo
+            ),
+            {
+
+                name:name,
+
+                jersey:jersey,
+
+                position:position,
+
+                password:password,
+
+                pic:image,
+
+                /* নতুন তথ্য */
+
+                memberNo:memberNo,
+
+                blood:blood,
+
+                contact:contact,
+
+                /* নতুন image field-ও রাখা হচ্ছে */
+
+                image:image,
+
+                createdAt:
+                new Date().toISOString()
+
+            }
+        );
+
+
+        alert(
+            "Member সফলভাবে যোগ হয়েছে!"
+        );
+
+
+        document
+        .getElementById("member-pic")
+        .value = "";
+
+        document
+        .getElementById("member-name")
+        .value = "";
+
+        document
+        .getElementById("jersey-number")
+        .value = "";
+
+        document
+        .getElementById("member-position")
+        .value = "";
+
+        document
+        .getElementById("member-no")
+        .value = "";
+
+        document
+        .getElementById("member-password")
+        .value = "";
+
+        document
+        .getElementById("member-blood")
+        .value = "";
+
+        document
+        .getElementById("member-contact")
+        .value = "";
+
+
+    }catch(error){
+
+        alert(
+            "Member Error: " +
+            error.message
+        );
+
+    }
+
+};
+
+
+/* =====================================================
+   MEMBER LOGIN
+===================================================== */
+
+window.memberLogin = async function(){
+
+    const memberNo =
+        document
+        .getElementById("member-no-login")
+        .value.trim();
+
+    const password =
+        document
+        .getElementById("member-password-login")
+        .value;
+
+
+    if(!memberNo || !password){
+
+        alert(
+            "Member No এবং Password দিন!"
+        );
+
+        return;
+
+    }
+
+
+    try{
+
+        /*
+          পুরোনো database structure:
+          members/MEMBER_NO
+        */
+
+        const snapshot =
+            await get(
+                ref(
+                    db
